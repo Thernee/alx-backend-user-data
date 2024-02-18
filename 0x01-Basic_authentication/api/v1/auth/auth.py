@@ -13,15 +13,18 @@ class Auth:
     Manage API authentication
     """
 
+# improve to allow * at the end of excluded_paths
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
-        """Handle require auth"""
-        new_path = ''
+        """
+        Require authentication
+        """
         if path is None or excluded_paths is None or excluded_paths == []:
             return True
-        if not path.endswith('/'):
-            new_path = path + '/'
-        if new_path in excluded_paths or path in excluded_paths:
+        if path in excluded_paths:
             return False
+        for path in excluded_paths:
+            if path.endswith('*') and path[:-1] in path:
+                return False
         return True
 
     def authorization_header(self, request=None) -> str:
