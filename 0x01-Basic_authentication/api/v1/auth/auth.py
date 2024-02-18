@@ -25,7 +25,7 @@ class Auth:
         if path in excluded_paths or new_path in excluded_paths:
             return False
         for paths in excluded_paths:
-            if paths.endswith('*') and paths[:-1] in path:
+            if path.endswith('*') and path[:-1] in path:
                 return False
         return True
 
