@@ -51,10 +51,10 @@ class DB:
         find user by given filters
         """
         try:
-            results = self.__session.query(User).filter_by(**kwargs).first()
+            results = self._session.query(User).filter_by(**kwargs).first()
         except InvalidRequestError:
             raise InvalidRequestError
-        if not results:
+        if results is None:
             raise NoResultFound
         return results
 
