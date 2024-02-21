@@ -4,8 +4,10 @@
 """
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
+from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import InvalidRequestError
+from sqlalchemy.orm import sessionmaker
 
 from user import Base
 from user import User
@@ -43,3 +45,15 @@ class DB:
             self._session.commit()
             return user
         return
+
+    def find_user_by(self, **kwargs) -> User:
+        """
+        find user by given filters
+        """
+        try:
+            results = self.__session.query(User).filter_by(**kwargs).first()
+        except InvalidRequestError:
+            raise InvalidRequestError
+        if not results:
+            raise NoResultFound
+        return results
