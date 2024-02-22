@@ -81,3 +81,11 @@ class Auth:
         except Exception:
             return None
         return user
+
+    def destroy_session(self, user_id: int) -> None:
+        """
+        Updates current user session to None
+        """
+        user = self._db.find_user_by(user_id=user_id)
+        user.session_id = None
+        return None
