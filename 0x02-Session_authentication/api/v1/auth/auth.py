@@ -20,13 +20,18 @@ class Auth:
         """
         if path is None or excluded_paths is None or excluded_paths == []:
             return True
-        if not path.endswith('/'):
-            new_path = path + '/*'
-        if path in excluded_paths or new_path in excluded_paths:
+        if path in excluded_paths:
             return False
-        for paths in excluded_paths:
-            if paths.endswith('*') and paths[:-1] in path:
+
+        for a_path in excluded_paths:
+            if a_path.startswith(path):
                 return False
+            if path.startswith(a_path):
+                return False
+            if a_path[-1] == "*":
+                if path.startswith(a_path[:-1]):
+                    return False
+
         return True
 
     def authorization_header(self, request=None) -> str:
