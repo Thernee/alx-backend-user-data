@@ -30,9 +30,12 @@ def filter_request():
     """Filter incoming requests"""
     if auth:
         filtered_list = ['/api/v1/status/',
-                         '/api/v1/unauthorized/', '/api/v1/forbidden/']
+                         '/api/v1/unauthorized/',
+                         '/api/v1/forbidden/', '/api/v1/auth_session/login/']
         if auth.require_auth(request.path, filtered_list):
             if auth.authorization_header(request) is None:
+                abort(401)
+            elif auth.session_cookie(request) is None:
                 abort(401)
             elif auth.current_user(request) is None:
                 abort(403)
