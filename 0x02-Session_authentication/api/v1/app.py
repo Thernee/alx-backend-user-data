@@ -33,9 +33,9 @@ def filter_request():
                          '/api/v1/unauthorized/',
                          '/api/v1/forbidden/', '/api/v1/auth_session/login/']
         if auth.require_auth(request.path, filtered_list):
-            if auth.authorization_header(request) is None:
-                abort(401)
-            elif auth.session_cookie(request) is None:
+            session_cookie = auth.session_cookie(request)
+            authorization_header = auth.authorization_header(request)
+            if authorization_header is None and session_cookie is None:
                 abort(401)
             elif auth.current_user(request) is None:
                 abort(403)
