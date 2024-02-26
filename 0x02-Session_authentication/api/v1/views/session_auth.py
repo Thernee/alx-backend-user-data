@@ -4,13 +4,14 @@
 Module of SessionAuth
 """
 from flask import jsonify, request, Flask
+from api.v1.views import app_views
 from api.v1.views.users import User
 from os import getenv
 
 app = Flask(__name__)
 
 
-@app.route('/auth_session/login', methods=['POST'], strict_slashes=False)
+@app_views.route('/auth_session/login', methods=['POST'], strict_slashes=False)
 def login() -> str:
     """ 
     POST /api/v1/auth_session/login
